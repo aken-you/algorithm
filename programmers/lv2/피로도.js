@@ -59,3 +59,35 @@ function solution(k, dungeons) {
 
   return max;
 }
+
+// ! 2. DFS
+let max = 0;
+
+function DFS(dungeons, depth, visited, hp) {
+  for (let i = 0; i < dungeons.length; i++) {
+    if (!visited[i] && dungeons[i][0] <= hp) {
+      visited[i] = true;
+
+      DFS(dungeons, depth + 1, visited, hp - dungeons[i][1]);
+
+      visited[i] = false;
+    }
+  }
+
+  max = Math.max(depth, max);
+}
+
+function solution(k, dungeons) {
+  const n = dungeons.length;
+  const visited = Array.from({ length: n }, () => false);
+
+  DFS(dungeons, 0, visited, k);
+
+  return max;
+}
+
+solution(80, [
+  [80, 20],
+  [50, 40],
+  [30, 10],
+]);
