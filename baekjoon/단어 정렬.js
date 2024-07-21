@@ -29,3 +29,32 @@ words.sort((a, b) => {
 });
 
 console.log(words.join("\n"));
+
+// * 다른 방법
+let inputs = require("fs").readFileSync("/dev/stdin").toString().trim();
+inputs = inputs.split("\n");
+
+const n = Number(inputs.shift());
+
+let words = new Set(inputs);
+words = [...words];
+
+words.sort((a, b) => {
+  if (a.length === b.length) {
+    let i = 0;
+
+    while (i < a.length) {
+      // charCodeAt으로 아스키 코드를 비교
+      if (a[i].charCodeAt() !== b[i].charCodeAt()) {
+        break;
+      }
+      i++;
+    }
+
+    return a[i].charCodeAt() - b[i].charCodeAt();
+  }
+
+  return a.length - b.length;
+});
+
+console.log(words.join("\n"));
