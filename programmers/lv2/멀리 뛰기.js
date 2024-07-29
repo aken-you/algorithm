@@ -1,3 +1,4 @@
+// https://school.programmers.co.kr/learn/courses/30/lessons/12914
 // * 틀린 내 풀이
 // 한 번에 1칸 or 2칸
 // return 끝에 도달하는 경우의 수 % 1234567
@@ -37,4 +38,29 @@ function solution(n) {
   }
 
   return result % 1234567;
+}
+
+// * 다른 풀이 - DP
+// return 경우의 수 % 1234567
+// 1 - 1
+// 2 - 1+1,2
+// 3
+//  1의 경우에서 끝에 +2하기: 1+2
+//  2의 경우에서 끝에 +1하기: 1+1+1, 2+1
+// 4
+//  2의 경우에서 끝에 +2하기: 1+1+2, 2+2
+//  3의 경우에서 끝에 +1하기: 1+2+1, 1+1+1+1, 2+1+1
+
+function solution(n) {
+  // dp
+  const dp = new Array(n + 1).fill(0);
+
+  dp[1] = 1;
+  dp[2] = 2;
+
+  for (let i = 3; i <= n; i++) {
+    dp[i] = (dp[i - 1] + dp[i - 2]) % 1234567;
+  }
+
+  return dp[n];
 }
