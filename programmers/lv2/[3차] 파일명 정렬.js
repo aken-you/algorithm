@@ -64,3 +64,8 @@ function solution(files) {
 // compareFunction(a,b) 반환값 > 0: a가 b보다 먼저 오도록 정렬
 // compareFunction(a,b) 반환값 < 0: b가 a보다 먼저 오도록 정렬
 // compareFunction(a,b) 반환값 = 0: a와 b의 순서 변경 x
+
+// * 문자열 비교: String.prototype.localeCompare()
+// "a".localeCompare("b") < 0: "a"가 "b"보다 앞서므로 음수 값
+// "check".localeCompare("against") > 0: "check"가 "against"보다 뒤에 있으므로 양수 값
+// "a".localeCompare("a") === 0: 같은 문자열이므로 0
