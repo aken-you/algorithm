@@ -14,27 +14,27 @@
 
 // dfs(current);
 // cnt
-// queue = [current];
+// stack = [current];
 // current 방문 체크
 // cnt += current에 적힌 숫자
-// queue가 비었을 때까지 아래 과정 반복
-// queue 노드 꺼내서 주변 노드 탐색
+// stack가 비었을 때까지 아래 과정 반복
+// stack 노드 꺼내서 주변 노드 탐색
 // 주변 노드를 방문하지 않았을 경우 && 바다가 아닌 경우
 //  방문 표시
-//  queue에 넣기
+//  stack에 넣기
 //  cnt += 주변 노드에 적힌 숫자
 
 function dfs(start, checked, maps) {
   const dx = [1, -1, 0, 0];
   const dy = [0, 0, 1, -1];
-  const queue = [start];
+  const stack = [start];
   let cnt = 0;
 
   checked[start[0]][start[1]] = true;
   cnt += Number(maps[start[0]][start[1]]);
 
-  while (queue.length) {
-    const [x, y] = queue.pop();
+  while (stack.length) {
+    const [x, y] = stack.pop();
 
     for (let i = 0; i < 4; i++) {
       const nx = dx[i] + x;
@@ -45,7 +45,7 @@ function dfs(start, checked, maps) {
       if (maps[nx][ny] === "X" || checked[nx][ny]) continue;
 
       checked[nx][ny] = true;
-      queue.push([nx, ny]);
+      stack.push([nx, ny]);
       cnt += Number(maps[nx][ny]);
     }
   }
