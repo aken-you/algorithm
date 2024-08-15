@@ -65,6 +65,9 @@ let max = 0;
 
 function DFS(dungeons, depth, visited, hp) {
   for (let i = 0; i < dungeons.length; i++) {
+    // ! 다음에 탐색할 노드 조건
+    // 1. 방문하지 않아야 함
+    // 2. hp <= 다음 노드의 최소 피로도
     if (!visited[i] && dungeons[i][0] <= hp) {
       visited[i] = true;
 
@@ -74,6 +77,7 @@ function DFS(dungeons, depth, visited, hp) {
     }
   }
 
+  // ! 최대값 갱신
   max = Math.max(depth, max);
 }
 
