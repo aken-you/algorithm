@@ -23,3 +23,28 @@ function solution(brown, yellow) {
 
   return [row, col];
 }
+
+// * 다른 풀이
+// yellow의 약수 구하기 (i, b)
+// (x+2) * 2 + (y) * 2 =  brown일 때 break;
+function solution(brown, yellow) {
+  let result = [];
+
+  for (let i = 1; i <= Math.sqrt(yellow); i++) {
+    if (yellow % i !== 0) continue;
+
+    const b = yellow / i;
+
+    const row = Math.max(i, b);
+    const col = Math.min(i, b);
+
+    const cnt = (row + 2) * 2 + col * 2;
+
+    if (cnt === brown) {
+      result = [row, col];
+      break;
+    }
+  }
+
+  return result.map((e) => e + 2);
+}
