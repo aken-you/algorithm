@@ -53,3 +53,51 @@ function solution(board) {
 
   return max * max;
 }
+
+// ! 실패 (25.02.06)
+// 왼쪽, 왼쪽 위, 위 노드 중 가장 작은 값에서 1을 더한다는 아이디어를 생각하지 못함
+
+function solution(board) {
+  const dx = [-1, -1, 0];
+  const dy = [-1, 0, -1];
+
+  const n = board.length;
+  const m = board[0].length;
+
+  const dis = Array.from({ length: n }, (_, i) => [...board[i]]);
+
+  let max = 0; // board가 다 0일 수 있음
+
+  for (let i = 1; i < n; i++) {
+    for (let j = 1; j < m; j++) {
+      if (board[i][j] === 0) continue;
+
+      let min = -1;
+
+      for (let k = 0; k < dx.length; k++) {
+        const nx = i + dx[k];
+        const ny = j + dy[k];
+
+        if (nx < 0 || nx > n - 1 || ny < 0 || ny > m - 1) continue;
+
+        if (min === -1 || min > dis[nx][ny]) min = dis[nx][ny];
+      }
+
+      dis[i][j] = min + 1;
+
+      if (max < dis[i][j]) max = dis[i][j];
+    }
+  }
+
+  // board 중 하나라도 1이 있는 경우 고려
+  if (max === 0) {
+    for (let i = 0; i < n; i++) {
+      if (board[i][0] === 1) max = 1;
+    }
+    for (let i = 0; i < m; i++) {
+      if (board[0][i] === 1) max = 1;
+    }
+  }
+
+  return max * max;
+}
