@@ -78,8 +78,6 @@ function solution(board) {
         const nx = i + dx[k];
         const ny = j + dy[k];
 
-        if (nx < 0 || nx > n - 1 || ny < 0 || ny > m - 1) continue;
-
         if (min === -1 || min > dis[nx][ny]) min = dis[nx][ny];
       }
 
@@ -96,6 +94,39 @@ function solution(board) {
     }
     for (let i = 0; i < m; i++) {
       if (board[0][i] === 1) max = 1;
+    }
+  }
+
+  return max * max;
+}
+
+// ! 실패 (25.02.17)
+function solution(board) {
+  let max = 0;
+  let x = board.length;
+  let y = board[0].length;
+
+  for (let i = 1; i < x; i++) {
+    for (let j = 1; j < y; j++) {
+      if (board[i][j] >= 1) {
+        let min = Math.min(
+          board[i - 1][j],
+          board[i - 1][j - 1],
+          board[i][j - 1]
+        );
+
+        board[i][j] = min + 1;
+        max = Math.max(max, min + 1);
+      }
+    }
+  }
+
+  if (max === 0) {
+    for (let i = 0; i < x; i++) {
+      if (board[i][0]) max = 1;
+    }
+    for (let i = 0; i < y; i++) {
+      if (board[0][i]) max = 1;
     }
   }
 
