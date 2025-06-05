@@ -76,3 +76,88 @@ function solution(n, info) {
 
   return maxDiff === 0 ? [-1] : answer;
 }
+
+// !실패
+function whoIsWinner(apeach, ryan) {
+  let aScore = 0;
+  let rScore = 0;
+
+  for (let i = 0; i < apeach.length; i++) {
+    const aCnt = apeach[i];
+    const rCnt = ryan[i];
+
+    const score = 10 - i;
+
+    if (aCnt > rCnt) aScore += score;
+    else if (aCnt < rCnt) rScore += score;
+    else {
+      if (aCnt === 0 && rCnt === 0) continue;
+
+      aScore += score;
+    }
+  }
+
+  if (aScore >= rScore) return { winner: "apeach", diff: aScore - rScore };
+
+  return { winner: "ryan", diff: rScore - aScore };
+}
+
+function getLower(arr1, arr2) {
+  for (let i = arr1.length - 1; i >= 0; i--) {
+    if (arr1[i] > arr2[i]) {
+      return arr1;
+    } else if (arr1[i] < arr2[i]) {
+      return arr2;
+    } else {
+      continue;
+    }
+  }
+
+  return arr1;
+}
+
+function solution(n, info) {
+  let answer = [];
+  let maxDiff;
+
+  const arr = new Array(11).fill(0);
+
+  function dfs(currentIdx, remain) {
+    if (currentIdx === 10) {
+      arr[currentIdx] = remain;
+
+      const { winner, diff } = whoIsWinner(info, arr);
+
+      if (winner === "ryan") {
+        if (maxDiff === undefined || maxDiff < diff) {
+          maxDiff = diff;
+          answer = [...arr];
+        } else if (maxDiff === diff) {
+          answer = [...getLower(answer, arr)];
+        }
+      }
+
+      // 초기화
+      arr[currentIdx] = 0;
+
+      return;
+    }
+
+    const aCnt = info[currentIdx];
+    const need = aCnt + 1;
+
+    // * 화살을 쏠 수 있을 경우
+    if (remain >= need) {
+      arr[currentIdx] = need;
+      dfs(currentIdx + 1, remain - need);
+      arr[currentIdx] = 0;
+    }
+
+    // * 화살을 쏘지 않는 경우
+    dfs(currentIdx + 1, remain);
+  }
+
+  dfs(0, n);
+
+  return answer.length === 0 ? [-1] : answer;
+}
