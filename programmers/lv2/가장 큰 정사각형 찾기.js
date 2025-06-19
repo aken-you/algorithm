@@ -100,7 +100,7 @@ function solution(board) {
   return max * max;
 }
 
-// ! 실패 (25.02.17)
+// ! 실패 (25.02.17 / 25.06.19)
 function solution(board) {
   let max = 0;
   let x = board.length;
