@@ -23,3 +23,79 @@ function solution(n, works) {
 
   return sorted.reduce((acc, curr) => acc + curr * curr, 0);
 }
+
+// ! 실패(25.06.19)
+// max heap으로 구현
+class MaxHeap {
+  list = [];
+
+  swap(aI, bI) {
+    const temp = this.list[aI];
+    this.list[aI] = this.list[bI];
+    this.list[bI] = temp;
+  }
+
+  getMaxChildIndex(i) {
+    const [left, right] = [i * 2 + 1, i * 2 + 2];
+
+    if (right >= this.list.length) return left;
+
+    return this.list[left] > this.list[right] ? left : right;
+  }
+
+  push(value) {
+    this.list.push(value);
+
+    // 맨 아래에 있는 자식 노드부터 위로 올라가면서 정렬
+    let childIdx = this.list.length - 1;
+    let parentIdx = Math.floor((childIdx - 1) / 2);
+
+    // 부모가 존재해야 하고
+    // 부모 노드가 자식 노드보다 작으면 => 정렬
+    while (parentIdx >= 0 && this.list[parentIdx] < this.list[childIdx]) {
+      this.swap(parentIdx, childIdx);
+      childIdx = parentIdx;
+      parentIdx = Math.floor((childIdx - 1) / 2);
+    }
+  }
+
+  pop() {
+    this.swap(0, this.list.length - 1); // 최댓값을 쉽게 뽑기 위해 swap
+    const value = this.list.pop();
+
+    // root부터 정렬 시작
+    let parentIdx = 0;
+    let childrenIdx = this.getMaxChildIndex(parentIdx);
+
+    while (
+      childrenIdx < this.list.length &&
+      this.list[parentIdx] < this.list[childrenIdx]
+    ) {
+      this.swap(childrenIdx, parentIdx);
+      parentIdx = childrenIdx;
+      childrenIdx = this.getMaxChildIndex(parentIdx);
+    }
+
+    return value;
+  }
+}
+
+function solution(n, works) {
+  const sum = works.reduce((acc, curr) => acc + curr, 0);
+
+  if (sum <= n) return 0;
+
+  const heap = new MaxHeap();
+
+  works.sort((a, b) => b - a);
+  works.forEach((e) => heap.push(e));
+
+  while (n) {
+    const value = heap.pop();
+
+    heap.push(value - 1);
+    n -= 1;
+  }
+
+  return heap.list.reduce((acc, curr) => acc + curr * curr, 0);
+}
